@@ -30,7 +30,7 @@ import com.cadaverback.model.Subject;
 import com.cadaverback.model.User;
 import com.cadaverback.model.Verb;
 import com.cadaverback.model.Vote;
-import com.cadaverback.service.IPhraseRandomGeneratorService;
+import com.cadaverback.service.IPhraseService;
 import com.cadaverback.service.MailService;
 
 //@CrossOrigin(origins = "http://localhost:8080")
@@ -62,7 +62,7 @@ public class PhraseController
     MailService mailService;
 
     @Autowired
-    IPhraseRandomGeneratorService phraseGeneratorService;
+    IPhraseService phraseGeneratorService;
 
     @PostMapping("/phrases")
     public ResponseEntity<Phrase> create(@RequestBody Phrase phrase)

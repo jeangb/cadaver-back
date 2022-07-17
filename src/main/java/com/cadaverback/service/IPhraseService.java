@@ -1,6 +1,6 @@
 package com.cadaverback.service;
 
-public interface IPhraseRandomGeneratorService
+public interface IPhraseService
 {
 
     public String getRandomlyGeneratedPhrase();

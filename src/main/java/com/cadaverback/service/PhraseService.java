@@ -9,7 +9,7 @@ import com.cadaverback.dao.SubjectRepository;
 import com.cadaverback.dao.VerbRepository;
 
 @Service
-public class PhraseRandomGeneratorService implements IPhraseRandomGeneratorService
+public class PhraseService implements IPhraseService
 {
     @Autowired
     SubjectRepository subjectRepository;

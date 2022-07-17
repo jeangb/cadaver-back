@@ -1,7 +1,10 @@
 package com.cadaverback.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Phrase
@@ -56,6 +63,51 @@ public class Phrase
         this.verb = verb;
         this.directObject = directObject;
         this.circumstantialObject = circumstantialObject;
+    }
+
+    @JsonIgnore
+    public String getContenu()
+    {
+        return beautifyPhrase(new StringBuilder(this.subject.getLibelle()).append(" ").append(this.verb.getLibelle()).append(" ").append(this.directObject.getLibelle()).append(" ")
+                .append(this.circumstantialObject.getLibelle()));
+    }
+
+    @JsonIgnore
+    public String getMailsAuteursSepparatedByComma()
+    {
+        final List<User> authors = new ArrayList<>();
+        authors.add(this.getSubject().getUser());
+        authors.add(this.getVerb().getUser());
+        authors.add(this.getDirectObject().getUser());
+        authors.add(this.getCircumstantialObject().getUser());
+
+        final List<String> distinctsUsersMails = authors.stream().map(User::getEmail).filter(m -> StringUtils.isNotEmpty(m)).distinct().collect(Collectors.toList());
+        return String.join(",", distinctsUsersMails);
+    }
+
+    @JsonIgnore
+    public String getAuteursUsernamesSepparatedByComma()
+    {
+        final List<User> authors = new ArrayList<>();
+        authors.add(this.getSubject().getUser());
+        authors.add(this.getVerb().getUser());
+        authors.add(this.getDirectObject().getUser());
+        authors.add(this.getCircumstantialObject().getUser());
+
+        final List<String> distinctsUsernames = authors.stream().map(User::getUsername).filter(m -> StringUtils.isNotEmpty(m)).distinct().collect(Collectors.toList());
+        return String.join(", ", distinctsUsernames);
+    }
+
+    /**
+     * Ajoute une majuscule au début de la phrase ainsi qu'un point à la fin.
+     * 
+     * @param phrase
+     * @return
+     */
+    private String beautifyPhrase(StringBuilder phrase)
+    {
+        phrase.append(".");
+        return phrase.substring(0, 1).toUpperCase() + phrase.substring(1);
     }
 
     public Subject getSubject()
