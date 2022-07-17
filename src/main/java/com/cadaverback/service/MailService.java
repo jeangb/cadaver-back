@@ -10,6 +10,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.cadaverback.model.Phrase;
@@ -19,19 +20,28 @@ import com.sun.istack.NotNull;
 public class MailService implements IMailService
 {
 
+    @Value("${mail.host}")
+    private String mailHost;
+
+    @Value("${mail.post}")
+    private String mailPort;
+
+    @Value("${mail.username}")
+    private String username;
+
+    @Value("${mail.password}")
+    private String password;
+
     @Override
     public void sendCompletePhraseByMailToUsers(@NotNull final Phrase phrase)
     {
         System.out.println("ENVOI D'un mail");
 
-        final String username = "cadavreexquis.noreply@gmail.com";
-        final String password = "awmmljxfzinyoryp";
-
         Properties prop = new Properties();
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.host", mailHost);
+        prop.put("mail.smtp.port", mailPort);
         prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.starttls.enable", "true"); // TLS
+        prop.put("mail.smtp.starttls.enable", "true");
 
         Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication()
@@ -44,7 +54,7 @@ public class MailService implements IMailService
         {
 
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("cadavreexquis.noreply@gmail.com"));
+            message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(phrase.getMailsAuteursSepparatedByComma()));
             message.setSubject("CadavreExquis.fr - Une phrase à la quelle vous avez contribué est complète !");
             message.setText(getBodyMail(phrase));
