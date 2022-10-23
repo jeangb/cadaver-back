@@ -33,13 +33,12 @@ import com.cadaverback.model.Vote;
 import com.cadaverback.service.IPhraseService;
 import com.cadaverback.service.MailService;
 
-//@CrossOrigin(origins = "http://localhost:8080")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class PhraseController
 {
-
     @Autowired
     PhraseRepository phraseRepository;
 

@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cadaverback.dao.SubjectRepository;
 import com.cadaverback.model.Subject;
 
-@CrossOrigin(origins = "http://localhost:8080")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class SubjectController

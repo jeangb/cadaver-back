@@ -14,7 +14,8 @@ import com.cadaverback.dao.UserRepository;
 import com.cadaverback.model.Status;
 import com.cadaverback.model.User;
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class UserController

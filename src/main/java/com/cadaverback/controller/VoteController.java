@@ -20,7 +20,8 @@ import com.cadaverback.model.User;
 import com.cadaverback.model.Vote;
 import com.cadaverback.model.VoteId;
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class VoteController
