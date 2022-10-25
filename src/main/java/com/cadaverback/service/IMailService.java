@@ -10,7 +10,7 @@ public interface IMailService
     /**
      * 
      * @param phrase
-     *            {@link Phrase} avec tous ses mots settés
+     *            {@link Phrase} avec tous ses mots settÃ©s
      * @throws MessagingException
      */
     void sendCompletePhraseByMailToUsers(Phrase phrase);

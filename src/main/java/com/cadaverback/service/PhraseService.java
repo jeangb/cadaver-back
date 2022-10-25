@@ -39,7 +39,7 @@ public class PhraseService implements IPhraseService
     }
 
     /**
-     * Ajoute une majuscule au début de la phrase ainsi qu'un point à la fin.
+     * Ajoute une majuscule au dÃ©but de la phrase ainsi qu'un point Ã  la fin.
      * 
      * @param phrase
      * @return
