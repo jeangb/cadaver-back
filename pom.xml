@@ -12,6 +12,7 @@
 	<groupId>com</groupId>
 	<artifactId>cadaverback</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>cadaver-back</name>
 	<description>Back-End du projet Cadavre Exquis</description>
 	<properties>
@@ -40,8 +41,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.11</version>
-		</dependency>
+			</dependency>
 		<dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
@@ -64,7 +64,15 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-compiler-plugin</artifactId>
+			    <configuration>
+			        <encoding>UTF-8</encoding>
+			    </configuration>
+			</plugin>
 		</plugins>
+		
 	</build>
 
 </project>
