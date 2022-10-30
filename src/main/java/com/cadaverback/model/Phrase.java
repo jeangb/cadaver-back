@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
+@Entity(name = "phrase")
 public class Phrase
 {
     @Id

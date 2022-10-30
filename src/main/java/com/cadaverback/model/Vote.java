@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-@Entity
+@Entity(name = "vote")
 public class Vote
 {
 

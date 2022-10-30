@@ -16,6 +16,6 @@ public interface CircumstantialObjectRepository extends JpaRepository<Circumstan
 
     boolean existsByLibelle(@NotNull final String libelle);
 
-    @Query(value = "select * from circumstantialObject where LTRIM(RTRIM(libelle)) != '' order by rand() limit 1", nativeQuery = true)
+    @Query(value = "select * from circumstantialobject where LTRIM(RTRIM(libelle)) != '' order by rand() limit 1", nativeQuery = true)
     CircumstantialObject findRandom();
 }
