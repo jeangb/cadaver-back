@@ -1,5 +1,7 @@
 package com.cadaverback.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cadaverback.dao.UserRepository;
+import com.cadaverback.model.User;
 import com.cadaverback.model.dto.UserDTO;
 import com.cadaverback.model.jwt.JwtRequest;
 import com.cadaverback.model.jwt.JwtResponse;
 import com.cadaverback.security.config.JwtTokenUtil;
 import com.cadaverback.security.config.UserDetailsImpl;
+import com.cadaverback.service.IMailService;
 import com.cadaverback.service.JwtUserDetailsService;
 
 @RestController
@@ -38,6 +42,9 @@ public class JwtAuthenticationController
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    IMailService mailService;
+
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception
     {
@@ -53,13 +60,19 @@ public class JwtAuthenticationController
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception
     {
-        com.cadaverback.model.User existingUserOnName = userRepository.findByUsername(user.getUsername()).orElse(null);
-        com.cadaverback.model.User existingUserOnEmail = userRepository.findByEmail(user.getEmail()).orElse(null);
+        List<User> existingListUserOnName = userRepository.findAllByUsername(user.getUsername());
+        List<User> existingListUserOnEmail = userRepository.findAllByEmail(user.getEmail());
 
-        if (null == existingUserOnName && null == existingUserOnEmail)
+        if (existingListUserOnName.isEmpty() && existingListUserOnEmail.isEmpty())
         {
-            return ResponseEntity.ok(userDetailsService.save(user));
-        } else if (null != existingUserOnName)
+            ResponseEntity<User> createdUser = ResponseEntity.ok(userDetailsService.save(user));
+            if (createdUser.getStatusCode() == HttpStatus.OK)
+            {
+                mailService.sendRegistrationMail(user);
+            }
+            return createdUser;
+
+        } else if (!existingListUserOnName.isEmpty())
         {
             return new ResponseEntity<>("Username is already taken", HttpStatus.CONFLICT);
         } else

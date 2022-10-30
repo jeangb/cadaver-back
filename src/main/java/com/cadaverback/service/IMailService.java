@@ -3,6 +3,7 @@ package com.cadaverback.service;
 import javax.mail.MessagingException;
 
 import com.cadaverback.model.Phrase;
+import com.cadaverback.model.dto.UserDTO;
 
 public interface IMailService
 {
@@ -14,5 +15,7 @@ public interface IMailService
      * @throws MessagingException
      */
     void sendCompletePhraseByMailToUsers(Phrase phrase);
+
+    void sendRegistrationMail(UserDTO user);
 
 }

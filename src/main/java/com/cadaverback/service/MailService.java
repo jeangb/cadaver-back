@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.cadaverback.model.Phrase;
+import com.cadaverback.model.dto.UserDTO;
 import com.sun.istack.NotNull;
 
 @Service
@@ -72,6 +73,44 @@ public class MailService implements IMailService
     {
         return "La phrase suivante (id=" + phrase.getId() + ") est complète :" + "\n\n" + phrase.getContenu() + " \n\n Les différentes auteurs sont "
                 + phrase.getAuteursUsernamesSepparatedByComma();
+    }
+
+    private String getBodyMailRegistration(final UserDTO user)
+    {
+        return "Bienvenu " + user.getUsername() + ". \n\n Votre mot de passe est " + user.getPassword() + "\n\n A bientôt sur CadavreExquis.fr";
+    }
+
+    @Override
+    public void sendRegistrationMail(UserDTO user)
+    {
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", mailHost);
+        prop.put("mail.smtp.port", mailPort);
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication()
+            {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try
+        {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+            message.setSubject("CadavreExquis.fr - création d'un compte");
+            message.setText(getBodyMailRegistration(user));
+
+            Transport.send(message);
+
+        } catch (MessagingException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }
