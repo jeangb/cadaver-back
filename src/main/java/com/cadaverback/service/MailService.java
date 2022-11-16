@@ -71,13 +71,13 @@ public class MailService implements IMailService
 
     private String getBodyMail(final Phrase phrase)
     {
-        return "La phrase suivante (id=" + phrase.getId() + ") est complète :" + "\n\n" + phrase.getContenu() + " \n\n Les différentes auteurs sont "
-                + phrase.getAuteursUsernamesSepparatedByComma() + "\n\n A bientôt sur CadavreExquis.fr";
+        return "La phrase suivante (id=" + phrase.getId() + ") est complète :" + "\n\n" + phrase.getContenu() + " \n\nLes différentes auteurs sont "
+                + phrase.getAuteursUsernamesSepparatedByComma() + "\n\nA bientôt sur CadavreExquis.fr";
     }
 
     private String getBodyMailRegistration(final UserDTO user)
     {
-        return "Bienvenu " + user.getUsername() + ". \n\n Votre mot de passe est " + user.getPassword() + "\n\n A bientôt sur CadavreExquis.fr";
+        return "Bienvenu " + user.getUsername() + ". \n\nVotre mot de passe est " + user.getPassword() + "\n\nA bientôt sur CadavreExquis.fr";
     }
 
     @Override
