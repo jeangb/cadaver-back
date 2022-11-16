@@ -57,7 +57,7 @@ public class MailService implements IMailService
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(phrase.getMailsAuteursSepparatedByComma()));
-            message.setSubject("CadavreExquis.fr - Une phrase à la quelle vous avez contribué est complète !");
+            message.setSubject("CadavreExquis.fr - Une phrase à laquelle vous avez contribué est complète !");
             message.setText(getBodyMail(phrase));
 
             Transport.send(message);
@@ -71,7 +71,7 @@ public class MailService implements IMailService
 
     private String getBodyMail(final Phrase phrase)
     {
-        return "La phrase suivante (id=" + phrase.getId() + ") est complète :" + "\n\n" + phrase.getContenu() + " \n\nLes différentes auteurs sont "
+        return "La phrase suivante (id=" + phrase.getId() + ") est complète :" + "\n\n" + phrase.getContenu() + " \n\nLes différents auteurs sont "
                 + phrase.getAuteursUsernamesSepparatedByComma() + "\n\nA bientôt sur CadavreExquis.fr";
     }
 
