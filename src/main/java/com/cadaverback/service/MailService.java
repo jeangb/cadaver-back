@@ -58,7 +58,7 @@ public class MailService implements IMailService
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(phrase.getMailsAuteursSepparatedByComma()));
             message.setSubject("CadavreExquis.fr - Une phrase à laquelle vous avez contribué est complète !");
-            message.setText(getBodyMail(phrase));
+            message.setContent(getBodyMail(phrase), "text/html; charset=UTF-8");
 
             Transport.send(message);
 
@@ -71,13 +71,35 @@ public class MailService implements IMailService
 
     private String getBodyMail(final Phrase phrase)
     {
-        return "La phrase suivante (id=" + phrase.getId() + ") est complète :" + "\n\n" + phrase.getContenu() + " \n\nLes différents auteurs sont "
-                + phrase.getAuteursUsernamesSepparatedByComma() + "\n\nA bientôt sur CadavreExquis.fr";
+        StringBuilder sb = new StringBuilder("<html>").append("<h2>CadavreExquis.fr</h2>");
+        sb.append("<span>La phrase suivante (id=").append(phrase.getId()).append(") est complète :</span>");
+        sb.append("</br></br>");
+        sb.append("<span style=\"font-style:italic;font-size:large\">").append(phrase.getContenu()).append("</span>");
+        sb.append("</br></br>");
+        sb.append("<span>Les différents auteurs sont ").append(phrase.getAuteursUsernamesSepparatedByComma()).append(".</span>");
+        sb.append("</br></br>");
+        sb.append("<span>A bientôt sur ").append(getUrlSite()).append("</span>");
+        sb.append("</html>");
+
+        return sb.toString();
+    }
+
+    private String getUrlSite()
+    {
+        return "<a href=\"https://cadavreexquis.fr/\" target=\"_blank\">CadavreExquis.fr</a>";
     }
 
     private String getBodyMailRegistration(final UserDTO user)
     {
-        return "Bienvenu " + user.getUsername() + ". \n\nVotre mot de passe est " + user.getPassword() + "\n\nA bientôt sur CadavreExquis.fr";
+        StringBuilder sb = new StringBuilder("<html>").append("<h2>CadavreExquis.fr</h2>");
+        sb.append("<span>Bienvenu ").append(user.getUsername()).append(".</span>");
+        sb.append("</br></br>");
+        sb.append("<span>Votre mot de passe est ").append(user.getPassword()).append("</span>");
+        sb.append("</br></br>");
+        sb.append("<span>A bientôt sur ").append(getUrlSite()).append("</span>");
+        sb.append("</html>");
+
+        return sb.toString();
     }
 
     @Override
@@ -103,7 +125,7 @@ public class MailService implements IMailService
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
             message.setSubject("CadavreExquis.fr - création d'un compte");
-            message.setText(getBodyMailRegistration(user));
+            message.setContent(getBodyMailRegistration(user), "text/html; charset=UTF-8");
 
             Transport.send(message);
 
