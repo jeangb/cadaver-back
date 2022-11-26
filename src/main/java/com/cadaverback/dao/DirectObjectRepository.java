@@ -16,6 +16,8 @@ public interface DirectObjectRepository extends JpaRepository<DirectObject, Long
 
     boolean existsByLibelle(@NotNull final String libelle);
 
-    @Query(value = "select * from directobject where LTRIM(RTRIM(libelle)) != '' order by rand() limit 1", nativeQuery = true)
+    @Query(value = "select d.* from directobject d join phrase p on d.id=p.directobject_id where "
+            + "(p.subject_id is not null and p.verb_id is not null and p.directobject_id is not null and p.circumstantialobject_id is not null)"
+            + " and LTRIM(RTRIM(libelle)) != '' order by rand() limit 1", nativeQuery = true)
     DirectObject findRandom();
 }

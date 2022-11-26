@@ -16,6 +16,8 @@ public interface VerbRepository extends JpaRepository<Verb, Long>
 
     boolean existsByLibelle(@NotNull final String libelle);
 
-    @Query(value = "select * from verb where LTRIM(RTRIM(libelle)) != '' order by rand() limit 1", nativeQuery = true)
+    @Query(value = "select v.* from verb v join phrase p on v.id=p.verb_id where "
+            + "(p.subject_id is not null and p.verb_id is not null and p.directobject_id is not null and p.circumstantialobject_id is not null)"
+            + "and LTRIM(RTRIM(libelle)) != '' order by rand() limit 1", nativeQuery = true)
     Verb findRandom();
 }
