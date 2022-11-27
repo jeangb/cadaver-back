@@ -63,6 +63,8 @@ public class PhraseController
     @Autowired
     IPhraseService phraseGeneratorService;
 
+    static final String MSG_ERR_CONFLIT_PHRASE = "Action interdite : 2 mots qui se suivent ont été entrés par le même joueur.";
+
     @PostMapping("/phrases")
     public ResponseEntity<Phrase> create(@RequestBody Phrase phrase)
     {
@@ -257,8 +259,11 @@ public class PhraseController
     }
 
     @PutMapping("/phrases/{id}")
-    public ResponseEntity<Phrase> update(@PathVariable("id") long id, @RequestBody Phrase phrase)
+    public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody Phrase phrase)
     {
+
+        // SecurityContextHolder.getContext().getAuthentication();
+
         Optional<Phrase> phraseData = phraseRepository.findById(id);
 
         if (phraseData.isPresent())
@@ -268,21 +273,33 @@ public class PhraseController
             if (!StringUtils.equals(null == myPhrase.getSubject() ? null : myPhrase.getSubject().getLibelle(),
                     null == phrase.getSubject() ? null : phrase.getSubject().getLibelle()))
             {
-                // phrase.getSubject().setUser(getUserFromWord(phrase.getSubject()));
                 myPhrase.setSubject(phrase.getSubject());
             }
             if (!StringUtils.equals(null == myPhrase.getVerb() ? null : myPhrase.getVerb().getLibelle(), null == phrase.getVerb() ? null : phrase.getVerb().getLibelle()))
             {
+                if (phrase.getVerb().getUser().getId() == myPhrase.getSubject().getUser().getId())
+                {
+                    return new ResponseEntity<>(MSG_ERR_CONFLIT_PHRASE, HttpStatus.UNAUTHORIZED);
+                }
                 myPhrase.setVerb(phrase.getVerb());
             }
             if (!StringUtils.equals(null == myPhrase.getDirectObject() ? null : myPhrase.getDirectObject().getLibelle(),
                     null == phrase.getDirectObject() ? null : phrase.getDirectObject().getLibelle()))
             {
+                if (phrase.getDirectObject().getUser().getId() == myPhrase.getVerb().getUser().getId())
+                {
+                    return new ResponseEntity<>(MSG_ERR_CONFLIT_PHRASE, HttpStatus.UNAUTHORIZED);
+                }
                 myPhrase.setDirectObject(phrase.getDirectObject());
             }
             if (!StringUtils.equals(null == myPhrase.getCircumstantialObject() ? null : myPhrase.getCircumstantialObject().getLibelle(),
                     null == phrase.getCircumstantialObject() ? null : phrase.getCircumstantialObject().getLibelle()))
             {
+                if (phrase.getCircumstantialObject().getUser().getId() == myPhrase.getDirectObject().getUser().getId())
+                {
+                    return new ResponseEntity<>(MSG_ERR_CONFLIT_PHRASE, HttpStatus.UNAUTHORIZED);
+                }
+
                 myPhrase.setCircumstantialObject(phrase.getCircumstantialObject());
                 // phrase finie : envoyer mail
                 mailService.sendCompletePhraseByMailToUsers(myPhrase);
