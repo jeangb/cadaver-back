@@ -33,6 +33,9 @@ public class MailService implements IMailService
     @Value("${mail.password}")
     private String password;
 
+    @Value("${url.prod}")
+    private String urlProd;
+
     @Override
     public void sendCompletePhraseByMailToUsers(@NotNull final Phrase phrase)
     {
@@ -58,7 +61,7 @@ public class MailService implements IMailService
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(phrase.getMailsAuteursSepparatedByComma()));
             message.setSubject("CadavreExquis.fr - Une phrase à laquelle vous avez contribué est complète !");
-            message.setContent(getBodyMail(phrase), "text/html; charset=UTF-8");
+            message.setContent(getBodyMailFinishedPhrase(phrase), "text/html; charset=UTF-8");
 
             Transport.send(message);
 
@@ -69,24 +72,33 @@ public class MailService implements IMailService
 
     }
 
-    private String getBodyMail(final Phrase phrase)
+    private String getBodyMailFinishedPhrase(final Phrase phrase)
     {
+        final String strIdPhrase = Long.toString(phrase.getId());
+
         StringBuilder sb = new StringBuilder("<html>").append("<h2>CadavreExquis.fr</h2>");
         sb.append("<span>La phrase suivante (id=").append(phrase.getId()).append(") est complète :</span>");
         sb.append("</br></br>");
-        sb.append("<span style=\"font-style:italic;font-size:large\">").append(phrase.getContenu()).append("</span>");
+        sb.append("Pour découvrir la phrase, ").append(getLinkToSiteAndFocusToPhrase(strIdPhrase)).append(" !");
+        // sb.append("<span style=\"font-style:italic;font-size:large\">").append(phrase.getContenu()).append("</span>");
         sb.append("</br></br>");
         sb.append("<span>Les différents auteurs sont ").append(phrase.getAuteursUsernamesSepparatedByComma()).append(".</span>");
         sb.append("</br></br>");
         sb.append("<span>A bientôt sur ").append(getUrlSite()).append("</span>");
         sb.append("</html>");
+        return sb.toString();
+    }
 
+    private String getLinkToSiteAndFocusToPhrase(final String idPhrase)
+    {
+        StringBuilder sb = new StringBuilder("<a href=\"");
+        sb.append(urlProd).append("?id_phrase=").append(idPhrase).append("\" target=\"_blank\">cliquez ici</a>");
         return sb.toString();
     }
 
     private String getUrlSite()
     {
-        return "<a href=\"https://cadavreexquis.fr/\" target=\"_blank\">CadavreExquis.fr</a>";
+        return "<a href=\"" + urlProd + " target=\"_blank\">CadavreExquis.fr</a>";
     }
 
     private String getBodyMailRegistration(final UserDTO user)
