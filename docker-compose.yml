@@ -1,0 +1,31 @@
+services:
+  database:
+    image: postgres:alpine
+    user: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: $YOUR_USERNAME
+      POSTGRES_PASSWORD: $YOUR_PASSWORD
+      POSTGRES_DB: $YOUR_DB_NAME
+    healthcheck:
+      test: 'pg_isready -U user --dbname=postgres'
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  back:
+    image: maven:3.9-ibmjava-8
+    restart: unless-stopped
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/$YOUR_DB_NAME
+      - SPRING_DATASOURCE_USERNAME=$YOUR_USERNAME
+      - SPRING_DATASOURCE_PASSWORD=$YOUR_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
+    volumes:
+      - ".:/usr/src/server"
+    working_dir: "/usr/src/server"
+    command: ["mvn", "spring-boot:run"]
