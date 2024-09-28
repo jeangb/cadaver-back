@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Embeddable
-public class VoteId implements Serializable
-{
+public class VoteId implements Serializable {
     private static final long serialVersionUID = 8504876001894002888L;
 
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)

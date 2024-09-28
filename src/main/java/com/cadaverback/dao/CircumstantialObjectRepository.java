@@ -1,15 +1,13 @@
 package com.cadaverback.dao;
 
-import java.util.List;
-
+import com.cadaverback.model.CircumstantialObject;
+import com.sun.istack.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.cadaverback.model.CircumstantialObject;
-import com.sun.istack.NotNull;
+import java.util.List;
 
-public interface CircumstantialObjectRepository extends JpaRepository<CircumstantialObject, Long>
-{
+public interface CircumstantialObjectRepository extends JpaRepository<CircumstantialObject, Long> {
     List<CircumstantialObject> findAllByUserId(@NotNull final int userId);
 
     List<CircumstantialObject> findAllByLibelle(@NotNull final String libelle);

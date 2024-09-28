@@ -9,8 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity(name = "subject")
-public class Subject
-{
+public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
