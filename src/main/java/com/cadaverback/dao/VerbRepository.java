@@ -8,8 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.cadaverback.model.Verb;
 import com.sun.istack.NotNull;
 
-public interface VerbRepository extends JpaRepository<Verb, Long>
-{
+public interface VerbRepository extends JpaRepository<Verb, Long> {
     List<Verb> findAllByUserId(@NotNull final int userId);
 
     List<Verb> findAllByLibelle(@NotNull final String libelle);

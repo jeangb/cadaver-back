@@ -5,8 +5,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
 @Entity(name = "vote")
-public class Vote
-{
+public class Vote {
 
     @EmbeddedId
     private VoteId voteId;

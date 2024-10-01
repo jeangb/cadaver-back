@@ -1,7 +1,6 @@
 package com.cadaverback.model.dto;
 
-public class UserDTO
-{
+public class UserDTO {
     private String username;
 
     private String password;
@@ -37,5 +36,4 @@ public class UserDTO
     {
         this.email = email;
     }
-
 }

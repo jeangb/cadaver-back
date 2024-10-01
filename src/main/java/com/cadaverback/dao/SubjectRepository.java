@@ -8,8 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.cadaverback.model.Subject;
 import com.sun.istack.NotNull;
 
-public interface SubjectRepository extends JpaRepository<Subject, Long>
-{
+public interface SubjectRepository extends JpaRepository<Subject, Long> {
     List<Subject> findAllByUserId(@NotNull final long userId);
 
     List<Subject> findAllByLibelle(@NotNull final String libelle);

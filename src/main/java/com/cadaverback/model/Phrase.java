@@ -1,24 +1,14 @@
 package com.cadaverback.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity(name = "phrase")
 public class Phrase
@@ -86,6 +76,16 @@ public class Phrase
     }
 
     @JsonIgnore
+    public List<String> getMailsAuteurs() {
+        final List<User> authors = new ArrayList<>();
+        authors.add(this.getSubject().getUser());
+        authors.add(this.getVerb().getUser());
+        authors.add(this.getDirectObject().getUser());
+        authors.add(this.getCircumstantialObject().getUser());
+        return authors.stream().map(User::getEmail).filter(StringUtils::isNotEmpty).distinct().collect(Collectors.toList());
+    }
+
+    @JsonIgnore
     public String getAuteursUsernamesSepparatedByComma()
     {
         final List<User> authors = new ArrayList<>();
@@ -94,13 +94,13 @@ public class Phrase
         authors.add(this.getDirectObject().getUser());
         authors.add(this.getCircumstantialObject().getUser());
 
-        final List<String> distinctsUsernames = authors.stream().map(User::getUsername).filter(m -> StringUtils.isNotEmpty(m)).distinct().collect(Collectors.toList());
+        final List<String> distinctsUsernames = authors.stream().map(User::getUsername).filter(StringUtils::isNotEmpty).distinct().collect(Collectors.toList());
         return String.join(", ", distinctsUsernames);
     }
 
     /**
      * Ajoute une majuscule au début de la phrase ainsi qu'un point à la fin.
-     * 
+     *
      * @param phrase
      * @return
      */

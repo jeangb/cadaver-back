@@ -9,8 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity(name = "circumstantialobject")
-public class CircumstantialObject
-{
+public class CircumstantialObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

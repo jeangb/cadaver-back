@@ -1,100 +1,77 @@
 package com.cadaverback.controller;
 
+import com.cadaverback.dao.SubjectRepository;
+import com.cadaverback.model.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.cadaverback.dao.SubjectRepository;
-import com.cadaverback.model.Subject;
-
-//@CrossOrigin(origins = "http://localhost:4200")
-@CrossOrigin
 @RestController
 @RequestMapping("/api")
-public class SubjectController
-{
+public class SubjectController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubjectController.class);
+    private final SubjectRepository subjectRepository;
 
-    @Autowired
-    SubjectRepository subjectRepository;
+    public SubjectController(SubjectRepository subjectRepository) {
+        this.subjectRepository = subjectRepository;
+    }
 
     @PostMapping("/subjects")
-    public ResponseEntity<Subject> createSubject(@RequestBody Subject subject)
-    {
-        try
-        {
+    public ResponseEntity<Subject> createSubject(@RequestBody Subject subject) {
+        try {
             Subject _subject = subjectRepository.save(new Subject(subject.getId(), subject.getLibelle(), subject.getUser()));
             return new ResponseEntity<>(_subject, HttpStatus.CREATED);
-        } catch (Exception e)
-        {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/subjects")
-    public ResponseEntity<List<Subject>> getAll(@RequestParam(required = false) Long authorId)
-    {
-        try
-        {
+    public ResponseEntity<List<Subject>> getAll(@RequestParam(required = false) Long authorId) {
+        try {
             List<Subject> listSubjects;
-            if (null == authorId)
-            {
+            if (null == authorId) {
                 listSubjects = subjectRepository.findAll();
-            } else
-            {
+            } else {
                 listSubjects = subjectRepository.findAllByUserId(authorId);
             }
 
-            if (listSubjects.isEmpty())
-            {
+            if (listSubjects.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(listSubjects, HttpStatus.OK);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/subjects/{id}")
-    public ResponseEntity<Subject> getById(@PathVariable("id") long id)
-    {
+    public ResponseEntity<Subject> getById(@PathVariable("id") long id) {
         Optional<Subject> sujectData = subjectRepository.findById(id);
 
-        if (sujectData.isPresent())
-        {
+        if (sujectData.isPresent()) {
             return new ResponseEntity<>(sujectData.get(), HttpStatus.OK);
-        } else
-        {
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping("/subjects/{id}")
-    public ResponseEntity<Subject> update(@PathVariable("id") long id, @RequestBody Subject subject)
-    {
+    public ResponseEntity<Subject> update(@PathVariable("id") long id, @RequestBody Subject subject) {
         Optional<Subject> subjectData = subjectRepository.findById(id);
 
-        if (subjectData.isPresent())
-        {
+        if (subjectData.isPresent()) {
             Subject mySubject = subjectData.get();
             mySubject.setLibelle(subject.getLibelle());
             mySubject.setUser(subject.getUser());
             return new ResponseEntity<>(subjectRepository.save(mySubject), HttpStatus.OK);
-        } else
-        {
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

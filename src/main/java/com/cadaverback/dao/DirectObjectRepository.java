@@ -1,15 +1,13 @@
 package com.cadaverback.dao;
 
-import java.util.List;
-
+import com.cadaverback.model.DirectObject;
+import com.sun.istack.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.cadaverback.model.DirectObject;
-import com.sun.istack.NotNull;
+import java.util.List;
 
-public interface DirectObjectRepository extends JpaRepository<DirectObject, Long>
-{
+public interface DirectObjectRepository extends JpaRepository<DirectObject, Long> {
     List<DirectObject> findAllByUserId(@NotNull final int userId);
 
     List<DirectObject> findAllByLibelle(@NotNull final String libelle);

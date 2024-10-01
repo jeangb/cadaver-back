@@ -9,17 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity(name = "user")
-public class User
-{
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "login")
     private String username;
-
-    @Column(name = "password")
-    private String password;
 
     @Column(name = "email")
     private String email;
@@ -29,12 +25,10 @@ public class User
         super();
     }
 
-    public User(long id, String username, String password, String email)
-    {
+    public User(long id, String username, String email) {
         super();
         this.id = id;
         this.username = username;
-        this.password = password;
         this.email = email;
     }
 
@@ -58,16 +52,6 @@ public class User
         this.username = username;
     }
 
-    public String getPassword()
-    {
-        return password;
-    }
-
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
-
     public String getEmail()
     {
         return email;
@@ -81,7 +65,7 @@ public class User
     @Override
     public int hashCode()
     {
-        return Objects.hash(id, username, password);
+        return Objects.hash(id, username);
     }
 
     @Override
@@ -94,7 +78,7 @@ public class User
         if (getClass() != obj.getClass())
             return false;
         User other = (User) obj;
-        return Objects.equals(username, other.username) && Objects.equals(password, other.password);
+        return Objects.equals(username, other.username);
     }
 
 }
