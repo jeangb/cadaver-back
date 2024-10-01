@@ -21,10 +21,12 @@ services:
       - SPRING_DATASOURCE_USERNAME=$YOUR_USERNAME
       - SPRING_DATASOURCE_PASSWORD=$YOUR_PASSWORD
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_MAIL_USERNAME=$YOUR_MAIL_USERNAME
+      - SPRING_MAIL_PASSWORD=$YOUR_MAIL_PASSWORD
     depends_on:
       - database
     ports:
-      - "8080:8080"
+      - "9090:8080"
     volumes:
       - ".:/usr/src/server"
     working_dir: "/usr/src/server"
