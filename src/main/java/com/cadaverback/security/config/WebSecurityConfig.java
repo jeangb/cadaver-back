@@ -7,11 +7,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 	private final CorsConfigurator corsConfigurator;
 	private final AuthorizeRequestsConfigurator authorizeRequestsConfigurator;
@@ -20,6 +21,12 @@ public class WebSecurityConfig {
 		this.corsConfigurator = corsConfigurator;
 		this.authorizeRequestsConfigurator = authorizeRequestsConfigurator;
     }
+
+//	@Bean
+//	public JwtDecoder jwtDecoder() {
+//		// Replace "your-issuer-uri" with the actual issuer URI of your JWT provider
+//		return NimbusJwtDecoder.withJwkSetUri("http://localhost/.well-known/jwks.json").build();
+//	}
 
 	// https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html
 	@Bean

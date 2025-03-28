@@ -1,9 +1,10 @@
 package com.cadaverback.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
