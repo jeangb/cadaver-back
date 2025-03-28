@@ -2,7 +2,6 @@ package com.cadaverback.service;
 
 import com.cadaverback.model.Phrase;
 import com.cadaverback.model.dto.UserDTO;
-import com.sun.istack.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +27,7 @@ public class MailService implements IMailService
     }
 
     @Override
-    public void sendCompletePhraseByMailToUsers(@NotNull final Phrase phrase) {
+    public void sendCompletePhraseByMailToUsers(final Phrase phrase) {
         LOGGER.info("ENVOI D'un mail");
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(username);

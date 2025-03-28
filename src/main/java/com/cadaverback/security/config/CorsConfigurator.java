@@ -5,7 +5,7 @@ import org.springframework.security.config.annotation.web.configurers.CorsConfig
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
